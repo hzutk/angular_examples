@@ -1,0 +1,18 @@
+{
+  "catalog": {
+    "object-type": {
+      "new_object_type": "New object type",
+      "in_archive": "In archive",
+      "to_archive": "To archive",
+      "restore": "Restore",
+      "code": "Code",
+      "code_required": "Code is required",
+      "name": "Name",
+      "name_required": "Name is required",
+      "description": "Description",
+      "not_filled": "not filled",
+      "cancel": "Cancel",
+      "save": "Save"
+    }
+  }
+}

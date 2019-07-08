@@ -1,0 +1,18 @@
+{
+  "catalog": {
+    "object-type": {
+      "new_object_type": "Новый тип объекта",
+      "in_archive": "В архиве",
+      "to_archive": "В архив",
+      "restore": "Восстановить",
+      "code": "Код",
+      "code_required": "Поле код обязательно",
+      "name": "Наименование",
+      "name_required": "Поле наименование обязательно",
+      "description": "Описание",
+      "not_filled": "не заполнено",
+      "cancel": "Отмена",
+      "save": "Сохранить"
+    }
+  }
+}

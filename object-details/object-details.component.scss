@@ -1,0 +1,121 @@
+@import "~app/variable/variable";
+
+.catalog-form .inline-form.small > label {
+    min-width: 170px;
+}
+
+
+.blockQR a {
+    margin-bottom: 10px;
+}
+.blockQR a:nth-child(2) {
+    float: right;
+}
+div.c-input.borderless {
+    font-size: 16px;
+}
+.inline-form .c-input.ng-invalid.ng-touched,
+.inline-form .c-input.ng-invalid.invalid {
+    border-color: #e13339 !important;
+    color: #e13339 !important;
+}
+.inline-form .error {
+    display: none;
+    position: absolute;
+    color: #e13339 !important;
+}
+:host ::ng-deep ng-select.ng-invalid.ng-touched + .error,
+:host ::ng-deep ng-select.ng-invalid.invalid + .error,
+:host ::ng-deep itr-select-autocomplete.ng-invalid.invalid + .error,
+.inline-form .c-input.ng-invalid.invalid + .error,
+.inline-form .c-input.ng-invalid.ng-touched + .error  {
+    display: block;
+}
+:host ::ng-deep ng-select.ng-invalid.ng-touched .ng-control,
+:host ::ng-deep ng-select.ng-invalid.invalid .ng-control,
+:host ::ng-deep itr-select-autocomplete.ng-invalid.invalid .ng-control{
+    border-bottom: 1px solid #e13339 !important;
+    color: #e13339 !important;
+}
+.multi-select {
+    & /deep/ .ng-value{
+        display: none;
+    }
+}
+.remove.in-archive {
+    font-size: 15px !important;
+    cursor: pointer;
+}
+.link-grey.remove.in-archive {
+    margin-right: 30px;
+}
+.title.flex {
+    margin-bottom: 2px;
+}
+.title-flex-uppercase {
+    font-size: 30px;
+    color: $color-black;
+    font-weight: 100;
+    text-transform: uppercase;
+}
+.object-input {
+    font-size: 20px;
+    color: $color-black;
+    font-weight: 400;
+}
+.object-items-box-archive {
+    top: 10px !important;
+    position: relative !important;
+}
+.object-items-box-fix-qr, .object-items-box-archive {
+    width: 367px;
+}
+.qr-block {
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+}
+.qr-block img {
+    margin-bottom: 35px;
+}
+
+#qr {
+    width: 250px;
+}
+
+.object-submit {
+    margin-left: 0 !important;
+}
+.grey {
+    color: #5b5b5b !important;
+}
+.form-group label {
+    color: #969696;
+}
+.back.back-object {
+    margin-top: 0;
+}
+.ng-select {
+    margin-right: 0;
+}
+.container {
+    @media (max-width: 1600px) {
+        min-width: auto;
+        max-width: calc(100% - 50px);
+    }
+}
+
+.multiple-select-content.multiple-select-content-ru {
+    .mat-select {
+        .mat-select-trigger {
+            &:before {
+                content: "Компетенции";
+            }
+        }
+    }
+}
+.title-h1 {
+    font-size: 30px;
+    text-transform: uppercase;
+    font-weight: 300;
+}

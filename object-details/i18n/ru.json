@@ -1,0 +1,30 @@
+{
+  "catalog": {
+    "object-details": {
+      "to_object_list": "К списку объектов",
+      "object_in_archive": "Объект в архиве",
+      "new_object": "Новый объект",
+      "code": "Код",
+      "code_required": "Поле код обязательно",
+      "name": "Наименование",
+      "name_required": "Поле наименование обязательно",
+      "name_eng": "Наименование (Eng)",
+      "not_filled": "не заполнено",
+      "class": "Класс",
+      "class_required": "Поле класс обязательно",
+      "object_type": "Тип объекта",
+      "object_type_required": "Поле тип объекта обязательно",
+      "title": "Титул",
+      "construction_zone": "Строительная зона",
+      "save": "Сохранить",
+      "parent_object": "Родительский объект",
+      "drawing_number": "Номер чертежа",
+      "competences": "Компетенции",
+      "description": "Описание",
+      "not_specified": "не указан",
+      "to_archive": "В архив",
+      "restore": "Восстановить",
+      "print": "Печать"
+    }
+  }
+}

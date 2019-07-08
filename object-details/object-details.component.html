@@ -1,0 +1,367 @@
+<div class="page user-page">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <div class="backlink">
+                        <a 
+                            [queryParams]="paramsToBack"
+                            [routerLink]="['..']"
+                            href="javascript:void(0)" 
+                            queryParamsHandling="merge"
+                            class="backlink__link">
+                            <i class="icon-back backlink__icon"></i>
+                            <span class="backlink__text">
+                                {{ 'catalog.object-details.to_object_list' | translate }}
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="row">
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <div class="user-page__col-header">
+                                <h1 class="title-h1">
+                                    <span *ngIf="objectDetail.object_id; else objectNameTemplate" class="title-flex-uppercase">
+                                    <span class="object-input">[{{ objectDetail.object_code}}] </span>{{objectDetail.object_name}}</span> 
+                                        <span *ngIf="readonly" class="red">{{ 'catalog.object-details.object_in_archive' | translate }}</span>
+                                    <ng-template #objectNameTemplate>
+                                        <span>{{ 'catalog.object-details.new_object' | translate }}</span>
+                                    </ng-template>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                    <form
+                        #objectForm="ngForm"
+                        (submit)="submit(objectForm)"
+                        class="object-form modal-form catalog-form"
+                        style="width: 100%;"
+                        >
+                    <div class="row">
+                                <input type="hidden" [(ngModel)]="objectDetail.object_id" name="object_id" #object_id="ngModel">
+                                <div class="col" *ngIf="!readonly">
+                                        <mat-form-field class="modal-form__field">
+                                            <mat-label>{{ 'catalog.object-details.code' | translate }}</mat-label>
+                                            <input
+                                                matInput
+                                                (ngModelChange)="onFormChange()"
+                                                [(ngModel)]="objectDetail.object_code"
+                                                [disabled]="readonly"
+                                                [ngClass]="{'borderless': readonly, 'invalid': !object_code.valid && objectForm.submitted}"
+                                                [readonly]="readonly"
+                                                #object_code="ngModel"
+                                                maxlength="45"
+                                                name="object_code"
+                                                required
+                                                type="text"
+                                            >
+                                            <mat-error>{{ 'catalog.object-details.code_required' | translate }}</mat-error>
+                                        </mat-form-field>
+            
+                                        <mat-form-field class="modal-form__field">
+                                            <mat-label>{{ 'catalog.object-details.name' | translate }}</mat-label>
+                                            <input
+                                                matInput
+                                                (ngModelChange)="onFormChange()"
+                                                [(ngModel)]="objectDetail.object_name"
+                                                [disabled]="readonly"
+                                                [ngClass]="{'borderless': readonly, 'invalid': !object_name.valid && objectForm.submitted}"
+                                                [readonly]="readonly"
+                                                #object_name="ngModel"
+                                                class="c-input"
+                                                maxlength="45"
+                                                name="object_name"
+                                                required
+                                                type="text"
+                                            >
+                                            <mat-error>{{ 'catalog.object-details.name_required' | translate }}</mat-error>
+                                        </mat-form-field>
+            
+                                        <mat-form-field class="modal-form__field" *ngIf="!isMainMode && !readonly">
+                                            <mat-label>{{ 'catalog.object-details.name_eng' | translate }}</mat-label>
+                                            <input
+                                                matInput
+                                                (ngModelChange)="onFormChange()"
+                                                [(ngModel)]="objectDetail.object_name_2"
+                                                [disabled]="readonly"
+                                                [ngClass]="{'borderless': readonly}"
+                                                [readonly]="readonly"
+                                                #object_name_2="ngModel"
+                                                class="c-input"
+                                                maxlength="45"
+                                                name="object_name_2"
+                                                type="text"
+                                            >
+                                        </mat-form-field>
+                                        <mat-form-field *ngIf="!isMainMode && readonly" class="modal-form__field">
+                                            <mat-label>{{ 'catalog.object-details.name_eng' | translate }}</mat-label>
+                                            <input
+                                                type="text"
+                                                matInput
+                                                class="c-input"
+                                                value="{{ (objectDetail.object_name_2 || 'catalog.object-details.not_filled') | translate }}"
+                                                [readonly]="readonly"
+                                                [disabled]="readonly"
+                                                [ngClass]="{'borderless': readonly}"
+                                            >
+                                        </mat-form-field>
+            
+                                        <mat-form-field *ngIf="readonly" class="modal-form__field">
+                                            <mat-label>Класс</mat-label>
+                                            <input
+                                                type="text"
+                                                name=""
+                                                matInput
+                                                [readonly]="readonly"
+                                                [disabled]="readonly"
+                                                [ngClass]="{'borderless': readonly, 'invalid': !object_code.valid && objectForm.submitted}"
+                                                value="{{ getObjectClassFull() }}"
+                                                maxlength="45"
+                                            >
+                                        </mat-form-field>
+                                        <itr-select
+                                            *ngIf="!readonly"
+                                            label="{{ 'catalog.object-details.class' | translate }}"
+                                            error="{{ 'catalog.object-details.class_required' | translate }}"
+                                            [items]="(filteredObjectsClassList | async) || []"
+                                            [(ngModel)]="objectDetail.object_class_id"
+                                            name="object_class_id"
+                                            bindLabel="object_class_full"
+                                            bindValue="object_class_id"
+                                            required="true"
+                                        ></itr-select>
+            
+                                        <mat-form-field *ngIf="readonly" class="modal-form__field">
+                                            <mat-label>{{ 'catalog.object-details.object_type' | translate }}</mat-label>
+                                            <input type="text" name="" matInput
+                                                   [readonly]="readonly" [disabled]="readonly"
+                                                   [ngClass]="{'borderless': readonly, 'invalid': !object_code.valid && objectForm.submitted}"
+                                                   value="{{ getObjectTypeName() }}"
+                                                   maxlength="45">
+                                        </mat-form-field>
+                                        <itr-select
+                                            *ngIf="!readonly"
+                                            label="{{ 'catalog.object-details.object_type' | translate }}"
+                                            error="{{ 'catalog.object-details.object_type_required' | translate }}"
+                                            [items]="(filteredObjectTypes | async) || []"
+                                            [(ngModel)]="objectDetail.object_type_id"
+                                            name="object_type_id"
+                                            bindLabel="object_type_name"
+                                            bindValue="object_type_id"
+                                            required="true"
+                                        ></itr-select>
+            
+                                        
+            
+                                        <mat-form-field class="modal-form__field" *ngIf="!isMainMode">
+                                            <mat-label>{{ 'catalog.object-details.title' | translate }}</mat-label>
+                                            <input *ngIf="readonly" type="text" name="" matInput
+                                                   [readonly]="readonly" [disabled]="readonly"
+                                                   [ngClass]="{'borderless': readonly, 'invalid': !object_code.valid && objectForm.submitted}"
+                                                   value="{{ (getObjectTitleName() || 'catalog.object-details.not_filled') | translate }}">
+                                            <mat-select *ngIf="!readonly"
+                                                        [(ngModel)]="objectDetail.title_id"
+                                                        name="title_id">
+                                                <mat-option>
+                                                    <ngx-mat-select-search [noEntriesFoundLabel]="words.noFound" [formControl]="objectsWbsTitleSearchCtrl"></ngx-mat-select-search>
+                                                </mat-option>
+                                                <mat-option *ngFor="let _objectTitle of filteredWbsTitle | async"
+                                                            [value]="_objectTitle.title_id">
+                                                    {{ _objectTitle.title_name }}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{ 'catalog.object-details.class_required' | translate }}</mat-error>
+                                        </mat-form-field>
+            
+                                        <mat-form-field class="modal-form__field" *ngIf="!isMainMode">
+                                            <mat-label>{{ 'catalog.object-details.construction_zone' | translate }}</mat-label>
+                                            <input *ngIf="readonly" type="text" name="" matInput
+                                                   [readonly]="readonly" [disabled]="readonly"
+                                                   [ngClass]="{'borderless': readonly, 'invalid': !object_code.valid && objectForm.submitted}"
+                                                   value="{{ (getObjectZoneName() || 'catalog.object-details.not_filled') | translate }}">
+                                            <mat-select *ngIf="!readonly"
+                                                        [(ngModel)]="objectDetail.zone_id"
+                                                        name="zone_id">
+                                                <mat-option>
+                                                    <ngx-mat-select-search [noEntriesFoundLabel]="words.noFound"  [formControl]="objectsZoneSearchCtrl"></ngx-mat-select-search>
+                                                </mat-option>
+                                                <mat-option *ngFor="let _objectZone of filteredZones | async"
+                                                            [value]="_objectZone.zone_id">
+                                                    {{ _objectZone.zone_name }}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{ 'catalog.object-details.class_required' | translate }}</mat-error>
+                                        </mat-form-field>
+
+                                        <div *ngIf="isCreated || !readonly" class="form-group x2">
+                                                <button type="submit" name="button" class="button button--green button--lg">
+                                                    {{ 'catalog.object-details.save' | translate }}
+                                                </button>
+                                            </div>
+                                    </div>
+    
+                                <div class="col-4" *ngIf="readonly">
+                                    <div class="form-data mt-3">
+                                        <div class="form-data__label">{{ 'catalog.object-details.code' | translate }}</div>
+                                        <div class="form-data__field">{{objectDetail.object_code}} </div>
+                                    </div>
+    
+                                    <div class="form-data mt-3">
+                                        <div class="form-data__label">{{ 'catalog.object-details.name' | translate }}</div>
+                                        <div class="form-data__field">{{objectDetail.object_name}} </div>
+                                    </div>
+    
+                                    <div class="form-data mt-3">
+                                        <div class="form-data__label">{{ 'catalog.object-details.class' | translate }}</div>
+                                        <div class="form-data__field">{{getObjectClassFull()}}</div>
+                                    </div>
+    
+                                    <div class="form-data mt-3">
+                                        <div class="form-data__label">{{ 'catalog.object-details.object_type' | translate }}</div>
+                                        <div class="form-data__field">{{getObjectTypeName()}}</div>
+                                    </div>
+                        </div>
+                        <!-- col -->
+                        <div class="col" *ngIf="!readonly">
+                                <itr-select-single-search 
+                                label="{{ 'catalog.object-details.parent_object' | translate }}"
+                                selectedName="parent_object_name"
+                                [selectedItem]="objectDetail.parent_object_id"
+                                [inputItem]="objectDetail.parent_object_name"
+                                [selectedObjectsArray]="objects"
+                                selectedObjectIdField="object_id"
+                                (selectedItemChange)="selectedItemChange($event, 'parent_object_id')"
+                                [isFindApi]="true"
+                                [findApiFunc]="findObjectsInListCallback"
+                                [readonly]="readonly"
+                                bindValue="object_id"
+                                bindLabel="object_full_name"
+                            ></itr-select-single-search> 
+
+                            <mat-form-field class="modal-form__field" *ngIf="!isMainMode && !readonly">
+                                <mat-label>{{ 'catalog.object-details.drawing_number' | translate }}</mat-label>
+                                <input type="text" matInput class="c-input"
+                                        [(ngModel)]="objectDetail.sketch"
+                                        [readonly]="readonly" [disabled]="readonly"
+                                        #sketch="ngModel" name="sketch"
+                                        [ngClass]="{'borderless': readonly}"
+                                        maxlength="45"
+                                        (ngModelChange)="onFormChange()"
+                                >
+                            </mat-form-field>
+                            <mat-form-field class="modal-form__field" *ngIf="!isMainMode && readonly">
+                                <mat-label>{{ 'catalog.object-details.drawing_number' | translate }}</mat-label>
+                                <input type="text" matInput class="c-input"
+                                        value="{{ (objectDetail.sketch || 'catalog.object-details.not_filled' ) | translate }}"
+                                        [readonly]="readonly" [disabled]="readonly"
+                                        [ngClass]="{'borderless': readonly}"
+                                >
+                            </mat-form-field>
+
+                            <itr-select 
+                                        [(ngModel)]="competencies" 
+                                        [items]="objectCompetenciesList" 
+                                        [multi]="true"
+                                        [ngModelOptions]="{standalone: true}"
+                                        [readonly]="readonly"
+                                        bindLabel="competency_full" 
+                                        bindValue="competency_id" 
+                                        label="{{ 'catalog.object-details.competences' | translate }}"
+                                    ></itr-select>
+    
+        
+                            <mat-form-field class="modal-form__field" *ngIf="!readonly">
+                                <mat-label>{{ 'catalog.object-details.description' | translate }}</mat-label>
+                                <textarea rows="4" matInput
+                                            [(ngModel)]="objectDetail.object_desc"
+                                            #object_type_desc="ngModel" name="object_desc"
+                                            (ngModelChange)="onFormChange()"
+                                ></textarea>
+                            </mat-form-field>
+                            <mat-form-field class="modal-form__field" *ngIf="readonly">
+                                <mat-label>{{ 'catalog.object-details.description' | translate }}</mat-label>
+                                <textarea *ngIf="readonly" rows="4" matInput
+                                            [readonly]="readonly"
+                                            [disabled]="readonly"
+                                >{{ (objectDetail.object_desc || 'catalog.object-details.not_filled') | translate }} </textarea>
+                            </mat-form-field>
+                        </div>
+
+                            <div class="col-4" *ngIf="readonly">
+                                <div class="form-data mt-3">
+                                    <div class="form-data__label">{{ 'catalog.object-details.parent_object' | translate }}</div>
+                                    <div class="form-data__field">{{objectDetail.parent_object_name}} <span *ngIf="!objectDetail.parent_object_name">{{ 'catalog.object-details.not_specified' | translate }}</span></div>
+                                </div>
+
+                                <div class="form-data mt-3">
+                                        <itr-select
+                                            [(ngModel)]="competencies"
+                                            [items]="objectCompetenciesList"
+                                            [multi]="true"
+                                            [ngModelOptions]="{standalone: true}"
+                                            [readonly]="readonly"
+                                            bindLabel="competency_full"
+                                            bindValue="competency_id"
+                                            label="{{ 'catalog.object-details.competences' | translate }}"
+                                        ></itr-select>
+                                </div>
+                                <div class="form-data mt-3">
+                                    <div class="form-data__label">{{ 'catalog.object-details.description' | translate }}</div>
+                                    <div class="form-data__field">{{objectDetail.object_desc}} <span *ngIf="!objectDetail.object_desc">{{ 'catalog.object-details.not_specified' | translate }}</span></div>
+                                </div>
+                        </div>
+                        <!-- col -->
+                    </div>
+                </form>
+                </div>
+                <div class="col-auto user-page__right-col">
+                    <div class="user-page__col-header">
+                            <div class="">
+                                <ng-template [ngIf]="objectDetail.delete_flag === false">
+                                    <div class="trigger user-page__top-trigger" (click)="changeDeleteFlag()">
+                                        <i class="trigger__icon trigger__icon_red icon-basket"></i>
+                                        <span class="trigger__text">
+                                            {{ 'catalog.object-details.to_archive' | translate }}
+                                        </span>
+                                    </div>
+                                </ng-template>
+                                <ng-template [ngIf]="objectDetail.delete_flag">
+                                    <div class="archiv-controls">
+                                        <div class="archiv-controls__status">{{ 'catalog.object-details.to_archive' | translate }}е</div>
+                                        <div class="trigger user-page__top-trigger" (click)="changeDeleteFlag()">
+                                                <i class="trigger__icon icon-basket-restore"></i>
+                                                <span class="trigger__text">
+                                                    {{ 'catalog.object-details.restore' | translate }}
+                                                </span>
+                                            </div>
+                                    </div>
+                                </ng-template>
+                            </div>
+                        </div>
+                        <div class="barcode">
+                            <img #qrImage [hidden]="!objectDetail?.qr" [src]="objectDetail?.qr" alt="QR-Code">
+                            <div class="qr-block-inner">
+                                <ng-template [ngIf]="objectDetail.qr">
+                                    <div class="blockQR">
+                                        <a href="javascript:void(0)"
+                                           class="link-grey"
+                                           (click)="onClickPrintQR()">{{ 'catalog.object-details.print' | translate }}</a>
+                                    </div>
+                                </ng-template>
+                            </div>
+                        </div>
+               
+               
+                
+                </div>
+                <!-- col -->
+            </div>
+            <!-- row -->      
+        </div>
+        <!-- container-fluid -->
+    </div>
+    <!-- page -->
+    

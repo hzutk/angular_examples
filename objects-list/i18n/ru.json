@@ -1,0 +1,21 @@
+{
+  "catalog": {
+    "objects-list": {
+      "objects": "Объекты",
+      "search_result": "Результаты поиска",
+      "not_found": "не удалось найти",
+      "create_object": "Создать объект",
+      "show": "Показывать",
+      "active": "активные",
+      "in_archive": "в архиве",
+      "code": "Код",
+      "name": "Наименование",
+      "object_type": "Тип объекта",
+      "business_unit": "Бизнес-единица",
+      "department": "Отдел",
+      "competences": "Компетенции",
+      "class": "Класс",
+      "parent_object": "Родительский объект"
+    }
+  }
+}

@@ -1,0 +1,79 @@
+<ng-template #objectTypeTemplate>
+    <form class="modal-form" #objectTypeForm="ngForm" (ngSubmit)="submit(objectTypeForm)" >
+
+        <h3 class="modal-form__hd" [ngClass]="{'_ellipsis': objectType.object_type_id}">
+            {{ (objectType.object_type_id ? objectType.object_type_code : 'catalog.object-type.new_object_type') | translate }}
+        </h3>
+
+        <div *ngIf="objectType.object_type_id" class="modal-form-actions">
+            <ng-template [ngIf]="objectType.delete_flag">
+                <span class="modal-form-actions__alert">
+                    {{ 'catalog.object-type.in_archive' | translate }}
+                </span>
+                <a class="modal-form-actions__restore" (click)="changeDeleteFlag()"><i class="icon-basket-restore"></i>
+                    {{ 'catalog.object-type.restore' | translate }}
+                </a>
+            </ng-template>
+            <ng-template [ngIf]="!objectType.delete_flag">
+                <a class="modal-form-actions__remove" (click)="changeDeleteFlag()"><i class="icon-basket"></i>
+                    {{ 'catalog.object-type.to_archive' | translate }}
+                </a>
+            </ng-template>
+        </div>
+
+        <mat-form-field class="modal-form__field">
+            <mat-label>{{ 'catalog.object-type.code' | translate }}</mat-label>
+            <input type="text" matInput
+                  [(ngModel)]="objectType.object_type_code"
+                  #object_type_code="ngModel" required name="object_type_code"
+                  [readonly]="readonly"
+                  [disabled]="readonly"
+                  maxlength="45"
+                  (ngModelChange)="onFormChange()"
+                >
+            <mat-error>{{ 'catalog.object-type.code_required' | translate }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="modal-form__field">
+            <mat-label>{{ 'catalog.object-type.name' | translate }}</mat-label>
+            <input type="text" matInput
+                  [(ngModel)]="objectType.object_type_name"
+                  #object_type_name="ngModel" required name="object_type_name"
+                  [readonly]="readonly"
+                  [disabled]="readonly"
+                  maxlength="45"
+                  (ngModelChange)="onFormChange()"
+                >
+            <mat-error>{{ 'catalog.object-type.name_required' | translate }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="modal-form__field" *ngIf="!readonly">
+            <mat-label>{{ 'catalog.object-type.description' | translate }}</mat-label>
+            <textarea rows="4" matInput
+                      [(ngModel)]="objectType.object_type_desc"
+                      #object_type_desc="ngModel" name="object_type_desc"
+                      (ngModelChange)="onFormChange()"
+                      >
+            </textarea>
+        </mat-form-field>
+
+        <mat-form-field class="modal-form__field" *ngIf="readonly">
+            <mat-label>{{ 'catalog.object-type.description' | translate }}</mat-label>
+            <textarea *ngIf="readonly" rows="4" matInput
+                      [readonly]="readonly"
+                      [disabled]="readonly"
+                      >{{ (objectType.object_type_desc || 'catalog.object-type.not_filled') | translate }}
+            </textarea>
+        </mat-form-field>
+
+        <div *ngIf="isChange" class="modal-form-buttons">
+            <div  mat-button class="modal-form-buttons__button button" (click)="resetForm(); sideModalService.hide();">
+                {{ 'catalog.object-type.cancel' | translate }}
+            </div>
+            <button type="submit" mat-button class="button button--green button--lg" *ngIf="!readonly" [disabled]="!objectTypeForm.valid || disableSave">
+                {{ 'catalog.object-type.save' | translate }}
+            </button>
+        </div>
+
+    </form>
+</ng-template>

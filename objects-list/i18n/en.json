@@ -1,0 +1,21 @@
+{
+  "catalog": {
+    "objects-list": {
+      "objects": "Objects",
+      "search_result": "Search results",
+      "not_found": "not found",
+      "create_object": "Create object",
+      "show": "Show",
+      "active": "active",
+      "in_archive": "in archive",
+      "code": "Code",
+      "name": "Name",
+      "object_type": "Object type",
+      "business_unit": "Business-unit",
+      "department": "Department",
+      "competences": "Competences",
+      "class": "Class",
+      "parent_object": "Parent object"
+    }
+  }
+}

@@ -1,0 +1,44 @@
+@import "~app/variable/variable";
+$asc-img: url('/assets/img/table_arrow_down.png');
+$desc-img: url('/assets/img/table_arrow_up.png');
+
+.sort_asc, .sort_desc {
+  position: relative;
+  padding-right: 10px;
+}
+.items thead td > span {
+  cursor: pointer;
+}
+.sort_asc:after {
+  content: ' ';
+  background-image: $asc-img;
+  background-repeat: no-repeat;
+  background-position-y: center;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 100%;
+  height: 100%;
+}
+.sort_desc:after {
+  content: ' ';
+  background-image: $desc-img;
+  background-repeat: no-repeat;
+  background-position-y: center;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 100%;
+  height: 100%;
+}
+.tr__active {
+    background: $color-hover-table;
+    cursor: pointer;
+}
+.link-grey {
+    margin-left: auto;
+    padding-right: 25px;
+    display: inline-block;
+    margin-top: 7px;
+    cursor: pointer;
+}

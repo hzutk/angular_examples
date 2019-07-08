@@ -1,0 +1,30 @@
+{
+  "catalog": {
+    "object-details": {
+      "to_object_list": "To object list",
+      "object_in_archive": "Object in archive",
+      "new_object": "New object",
+      "code": "Code",
+      "code_required": "Code is required",
+      "name": "Name",
+      "name_required": "Name is required",
+      "name_eng": "Name (Eng)",
+      "not_filled": "not filled",
+      "class": "Class",
+      "class_required": "Class is required",
+      "object_type": "Object type",
+      "object_type_required": "Object type is required",
+      "title": "Title",
+      "construction_zone": "Construction zone",
+      "save": "Save",
+      "parent_object": "Parent object",
+      "drawing_number": "Drawing number",
+      "competences": "Competences",
+      "description": "Description",
+      "not_specified": "not specified",
+      "to_archive": "In archive",
+      "restore": "Restore",
+      "print": "Print"
+    }
+  }
+}

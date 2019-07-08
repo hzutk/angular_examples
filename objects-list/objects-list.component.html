@@ -1,0 +1,166 @@
+<main class="main">
+  <section class="mt-3 records">
+    <div class="container">
+      <div class="d-flex align-items-start topLine">
+        <div>
+          <h2 class="title flex">{{ 'catalog.objects-list.objects' | translate }}</h2>
+            <div [ngStyle]="{'visibility': !filter.search_text ? 'hidden' : ''}">
+              <ng-container *ngIf="!showMessage; then searchYes; else searchNo"></ng-container>
+              <ng-template #searchYes>
+                  {{ 'catalog.objects-list.search_result' | translate }}:
+                  "{{filter.search_text}}"
+              </ng-template>
+              <ng-template #searchNo>
+                  {{ 'catalog.objects-list.search_result' | translate }}:
+                  {{ 'catalog.objects-list.not_found' | translate }}
+              </ng-template>
+            </div>
+        </div>
+
+        <a href="javascript:void(0)" class="c-btn" (click)="createObject()">
+            {{ 'catalog.objects-list.create_object' | translate }}
+        </a>
+      </div>
+
+      <div class="d-flex switch">
+        <div class="buttons">
+          <h3 class="text">{{ 'catalog.objects-list.show' | translate }}: </h3>
+
+          <div class="date">
+            <div class="dateBlock">
+              <input type="text" name="from" class="datePick">
+              <div class="separator"></div>
+              <input type="text" name="till" class="datePick">
+            </div>
+          </div>
+
+          <div class="buttons-container" (click)="toggleActive()">
+            <a href="javascript:void(0)" class="switch-button switch-button__left active" [class.active]="isActive"
+              >{{ 'catalog.objects-list.active' | translate }}</a>
+
+            <a href="javascript:void(0)" class="switch-button switch-button__right switch-button--archive" [class.active]="!isActive"
+              >{{ 'catalog.objects-list.in_archive' | translate }}</a>
+          </div>
+        </div>
+
+        <!-- <div class="search" >
+          <form [class.active]="isSearchShown">
+
+            <input
+              #searchInput
+              type="text"
+              name="filter"
+              [(ngModel)]="filter.search_text"
+              (ngModelChange)="onSearchChange()"
+              (blur)="toggleSearch(searchInput)"
+            >
+
+            <button [class.hide]="filter.search_text !== ''">
+              <img src="assets/img/search_btn.png" alt="">
+            </button>
+          </form>
+
+          <button (click)="resetSearch()" [class.hide]="filter.search_text === '' || !isSearchShown" type="reset"></button>
+
+          <a href="javascript:void(0)"
+            *ngIf="!isSearchShown"
+            class="search-button"
+            (click)="toggleSearch(searchInput)"
+          >
+            <img src="assets/img/search_ico.png" alt="" class="search-image">
+            Поиск
+          </a>
+        </div> -->
+      </div>
+
+      <div class="items">
+        <div class="item active">
+          <itr-table
+            #itrTable
+            [dataSource]="objectsList"
+            [filter]="filter.search_text"
+            [dontSort]="source"
+            [dontFilter]="source"
+            [dontSearch]="source"
+            [additionData]="addition"
+            [key]="'tableKey5'"
+            (filterUpdate)="filterUpdate($event)"
+            (sortChange)="onSortChange($event)"
+            (nextPage)="onNextPage($event)"
+            (pageIndex)="pageIndex=$event"
+            (updateSearch)="onUpdateSearch($event)"
+          >
+            <ng-container itrColumnDef="object_code" title="{{ 'catalog.objects-list.code' | translate }}" [breakWordSymbol]="true">
+              <itr-header-cell *itrHeaderCellDef  type="search" style="width: 16.7%"></itr-header-cell>
+              <itr-cell *itrCellDef="let object" style="width: 16.7%" [title]="object.object_code">{{object.object_code}}</itr-cell>
+            </ng-container>
+
+            <ng-container itrColumnDef="object_name" title="{{ 'catalog.objects-list.name' | translate }}">
+              <itr-header-cell *itrHeaderCellDef  type="search" style="width: 17%"></itr-header-cell>
+              <itr-cell *itrCellDef="let object" [title]="object.object_name" style="width: 17%">{{object.object_name}}</itr-cell>
+            </ng-container>
+
+            <ng-container itrColumnDef="object_label_name" title="{{ 'catalog.objects-list.object_type' | translate }}" [breakWordSymbol]="true">
+              <itr-header-cell *itrHeaderCellDef type="search"></itr-header-cell>
+              <itr-cell *itrCellDef="let object" [title]="object.object_label_name">{{object.object_label_name || 'Не задана'}}</itr-cell>
+            </ng-container>
+
+            <ng-container itrColumnDef="org_name" title="{{ 'catalog.objects-list.business_unit' | translate }}" [visible]="false">
+              <itr-header-cell *itrHeaderCellDef type="search"></itr-header-cell>
+              <itr-cell *itrCellDef="let object" [title]="object.org_name">{{object.org_name || 'Не задана'}}</itr-cell>
+            </ng-container>
+
+            <ng-container itrColumnDef="department_name" title="{{ 'catalog.objects-list.department' | translate }}" [visible]="false">
+              <itr-header-cell *itrHeaderCellDef type="search"></itr-header-cell>
+              <itr-cell *itrCellDef="let object" [title]="object.department_name">{{object.department_name}}</itr-cell>
+            </ng-container>
+
+            <ng-container itrColumnDef="competenceString" title="{{ 'catalog.objects-list.competences' | translate }}">
+              <itr-header-cell
+                *itrHeaderCellDef type="filter"
+                [static]="true" [data]="objectCompetenciesList"
+                bindLabel="competency_full" bindValue="competency_id">
+              </itr-header-cell>
+              <itr-cell *itrCellDef="let object" [title]="object.competenceString">{{object.competenceString}}</itr-cell>
+            </ng-container>
+
+            <ng-container itrColumnDef="object_class_name" title="{{ 'catalog.objects-list.class' | translate }}">
+              <itr-header-cell
+                *itrHeaderCellDef type="filter"
+                [static]="true" [data]="objectsClassList"
+                bindLabel="object_class_full" bindValue="object_class_id">
+              </itr-header-cell>
+              <itr-cell *itrCellDef="let object" [title]="object.object_class_name">{{object.object_class_name}}</itr-cell>
+            </ng-container>
+
+            <ng-container itrColumnDef="parent_object_name" [title]="'catalog.objects-list.parent_object' | translate " [breakWordSymbol]="true">
+              <itr-header-cell *itrHeaderCellDef type="search" style="width: 19%"></itr-header-cell>
+              <itr-cell
+                *itrCellDef="let object"
+                [title]="object.parent_object_name"
+                style="width: 19%"
+              >
+                <a
+                  (click)="saveQueryParams(); $event.stopPropagation()"
+                  [routerLink]="['/main/catalog/objects', object.parent_object_id]"
+                  class="link-grey green"
+                >{{object.parent_object_code}} {{object.parent_object_name}}</a>
+              </itr-cell>
+            </ng-container>
+
+            <itr-header-row *itrHeaderRowDef="displayedColumns"></itr-header-row>
+            <itr-row
+              *itrRowDef="let object; columns: displayedColumns;"
+              [addClass]="{'tr__active': object == selectedObject}"
+              (click)="selectObj(object)"
+              (dblclick)="editObject(object.object_id)"
+              (panright)="editObject(object.object_id)"
+            >
+            </itr-row>
+          </itr-table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
